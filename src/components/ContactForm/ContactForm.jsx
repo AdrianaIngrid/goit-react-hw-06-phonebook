@@ -1,11 +1,15 @@
-import PropTypes from 'prop-types';
 import styles from './ContactForm.module.css';
 import React, { useState } from 'react';
 import { IoMdPersonAdd } from 'react-icons/io';
 import { BsTelephonePlusFill } from 'react-icons/bs';
-function ContactForm({handleNewContact} ) {
+import { addContact } from '../../Redux/contactsSlice';
+import { useDispatch } from 'react-redux';
+import { nanoid } from '@reduxjs/toolkit';
+function ContactForm() {
+  const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
   function handleChange(event) {
     const { name, value } = event.target;
     if (name === "name")
@@ -16,19 +20,19 @@ function ContactForm({handleNewContact} ) {
       setNumber(value);
       
   };
- function handleContact (ev) {
+ function handleSubmit (ev) {
    ev.preventDefault();
-   if (name.trim() && number.trim()) {
-        handleNewContact(name, number);
-        setName('');
-        setNumber('');
-   }
+   const contact = {id:nanoid(), name, number};
+   dispatch(addContact(contact));
+   setName('');
+   setNumber('');
+   
 
   };
  
 
     return (
-      <form onSubmit={handleContact} className={styles.form}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <label className={styles.label}>
           {' '}
           Name{' '}
@@ -69,7 +73,5 @@ function ContactForm({handleNewContact} ) {
       </form>
     );
   }
-ContactForm.propTypes = {
-  handleNewContact: PropTypes.func,
-};
+
 export default ContactForm;

@@ -1,8 +1,15 @@
 import styles from './Filter.module.css';
-import propTypes from 'prop-types';
 import { MdPersonSearch } from 'react-icons/md';
- function Filter ({ handleFilterChange, filter }) {
+import { useDispatch, useSelector } from 'react-redux';
+import { selectFilter } from '../../Redux/selectors';
+import { setFilter } from '../../Redux/filterSlice';
+function Filter() {
+  const dispatch = useDispatch();
+  const filter = useSelector(selectFilter);
   
+  const handleFilterChange = ev => {
+    dispatch(setFilter(ev.target.value));
+  };
  
   return (
     <div>
@@ -18,8 +25,5 @@ import { MdPersonSearch } from 'react-icons/md';
   );
 }    
 
-Filter.propTypes = {
-  handleFilterChange: propTypes.func,
-  filter: propTypes.string,
-}
+
 export default Filter;
