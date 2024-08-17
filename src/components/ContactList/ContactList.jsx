@@ -1,13 +1,10 @@
 import ContactItem from './ContactItem';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteContact } from '../../Redux/contactsSlice';
-function ContactList({contacts, id}) {
+import { getContacts } from '../../Redux/selectors';
+function ContactList() {
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  const contacts = useSelector(getContacts) || [];
 
   const handleDeleteContact = id => {
     dispatch(deleteContact(id));
@@ -20,7 +17,7 @@ function ContactList({contacts, id}) {
           <ContactItem
           contact ={contact}
             key={contact.id}
-            deleteContact={()=> handleDeleteContact(id)}
+            deleteContact={()=> handleDeleteContact(contact.id)}
           ></ContactItem>
         ))}
       </ul>
