@@ -1,11 +1,11 @@
 import styles from './Filter.module.css';
 import { MdPersonSearch } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectFilter } from '../../Redux/selectors';
+import { getFilter } from '../../Redux/selectors';
 import { setFilter } from '../../Redux/filterSlice';
 function Filter() {
   const dispatch = useDispatch();
-  const filter = useSelector(selectFilter);
+  const filter = useSelector(getFilter);
   
   const handleFilterChange = ev => {
     dispatch(setFilter(ev.target.value));
