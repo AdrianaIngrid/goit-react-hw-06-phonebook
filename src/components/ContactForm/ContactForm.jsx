@@ -3,13 +3,16 @@ import React, { useState } from 'react';
 import { IoMdPersonAdd } from 'react-icons/io';
 import { BsTelephonePlusFill } from 'react-icons/bs';
 import { addContact } from '../../Redux/contactsSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
+import { getFilteredContacts } from '../../Redux/selectors';
 function ContactForm() {
-  const dispatch = useDispatch();
+
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-
+    const dispatch = useDispatch();
+  const contacts = useSelector(getFilteredContacts);
+  console.log(contacts);
   function handleChange(event) {
     const { name, value } = event.target;
     if (name === "name")
@@ -20,16 +23,31 @@ function ContactForm() {
       setNumber(value);
       
   };
- function handleSubmit (ev) {
-   ev.preventDefault();
-   const contact = {id:nanoid(), name, number};
-   dispatch(addContact(contact));
+ const handleSubmit = event => {
+   event.preventDefault();
+
+   // Verifică dacă contactul există deja
+   const contactExists = contacts.some(
+     contact => contact.name.toLowerCase() === name.toLowerCase()
+   );
+
+   if (contactExists) {
+     alert(`Contact with name "${name}" already exists.`);
+     return;
+   }
+
+   const newContact = {
+     id: nanoid(), // Creează un id unic
+     name,
+     number,
+   };
+
+   dispatch(addContact(newContact)); // Adaugă contactul în Redux
+
+   // Resetează formularul și state-ul local
    setName('');
    setNumber('');
-   
-
-  };
- 
+ };
 
     return (
       <form onSubmit={handleSubmit} className={styles.form}>
