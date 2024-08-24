@@ -7,6 +7,7 @@ import {  useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { getContacts } from '../Redux/selectors';
 
+
 function App() {
    const contacts = useSelector(getContacts);
   // Aici salvam contactele cand se face update la ele
@@ -16,7 +17,7 @@ function App() {
    }, [contacts]);
     
   return (
-    <div>
+    <div className={styles.box}>
       <h1 className={styles.title}>Phonebook</h1>
       <ContactForm />
 
